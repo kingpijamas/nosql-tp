@@ -2,9 +2,8 @@ from neo4jrestclient.client import GraphDatabase, Node
 import timeit
 import os
 import re
+import sys
 
-# where Cypher queries are stored
-QUERY_DIR = 'queries'
 QUERY_RUN_TIMES = 1
 
 # the database
@@ -39,11 +38,23 @@ def run_query_times(times):
 	return (total_time, total_time/times, results)
 
 def main():
-	for filename in sorted(os.listdir(QUERY_DIR)):
-		with open(os.path.join(QUERY_DIR, filename), 'r') as file:
+	params = sys.argv
+
+	query_files = list()
+
+	for param in params[1:]:
+		if os.path.isfile(param):
+			query_files.append(param)
+		else:
+			dir = param
+			for filename in sorted(os.listdir(dir)):
+				query_files.append(os.path.join(dir, filename))
+
+	for filename in query_files:
+		with open(filename, 'r') as query_file:
 			print("Query:\n\t{filename}".format(filename=filename))
 			
-			parse(file)
+			parse(query_file)
 			result = run_query_times(QUERY_RUN_TIMES)
 			
 			print("\nResult:\n\t{result}".format(result=result[2]))
