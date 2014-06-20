@@ -1,3 +1,4 @@
+()
 MATCH (l:LineItem)
 WHERE l.l_shipdate <= {date}
 RETURN

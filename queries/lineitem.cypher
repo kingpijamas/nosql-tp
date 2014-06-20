@@ -11,7 +11,7 @@ CREATE (l:LineItem
 	l_shipdate: 1403199078825,
 	l_commitdate: 123456,
 	l_receiptdate: 7891011,
-	l_shipinstruct: 12131415,
+	l_shipinstruct: 12131415, //aca poner un index! (q1)
 	l_shipmode: 'cargo',
 	l_shipcomment: "I'm on a boat!"
 })
