@@ -1,6 +1,8 @@
 ()
-MATCH (l:LineItem)
-WHERE l.l_shipdate <= {date}
+MATCH
+	(l:LineItem)
+WHERE
+	l.l_shipdate <= {date}
 RETURN
 	//hace group by en orden!
 	l.l_returnflag, //primer coso por el que agrupa!
