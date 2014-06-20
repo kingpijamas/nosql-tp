@@ -1,4 +1,4 @@
-SELECT 
+SELECT
 	s_acctbal,
 	s_name,
 	n_name,
@@ -45,4 +45,5 @@ ORDER BY
 	s_acctbal desc,
 	n_name,
 	s_name,
-	p_partkey;
+	p_partkey
+;
