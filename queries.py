@@ -4,13 +4,11 @@ import os
 import re
 import sys
 
-QUERY_RUN_TIMES = 1
-
 # the database
 GDB = GraphDatabase("http://localhost:7474/db/data/")
 
 # auxiliary variables for parsing
-q = returns = None
+q = params = returns = None
 # query results go here
 results = None
 
@@ -21,9 +19,9 @@ def parse(file):
 	returns = eval(matches.group('returns'))
 
 def run_query():
-	global q, returns, results
+	global q, params, returns, results
 	
-	results = GDB.query(q=q, returns=returns)
+	results = GDB.query(q=q, params=params, returns=returns)
 
 def run_query_times(times):
 	global results
@@ -38,28 +36,29 @@ def run_query_times(times):
 	return (total_time, total_time/times, results)
 
 def main():
-	params = sys.argv
+	params = sys.argv[1:]
 
-	query_files = list()
-
-	for param in params[1:]:
+	queries = list()
+	for param, times_str in zip(params[::2], params[1::2]):
+		times = int(times_str, 10)
+		
 		if os.path.isfile(param):
-			query_files.append(param)
+			queries.append((param, times))
 		else:
 			dir = param
 			for filename in sorted(os.listdir(dir)):
-				query_files.append(os.path.join(dir, filename))
+				queries.append((os.path.join(dir, filename), times))
 
-	for filename in query_files:
+	for filename, times in queries:
 		with open(filename, 'r') as query_file:
 			print("Query:\n\t{filename}".format(filename=filename))
 			
 			parse(query_file)
-			result = run_query_times(QUERY_RUN_TIMES)
+			result = run_query_times(times)
 			
 			print("\nResult:\n\t{result}".format(result=result[2]))
 			print("\nStats:")
-			print("\tRuns: {runs}".format(runs=QUERY_RUN_TIMES))
+			print("\tRuns: {runs}".format(runs=times))
 			print("\tTotal time: {total_time} seconds".format(total_time=result[0]))
 			print("\tMean query time: {avg_time} seconds\n\n".format(avg_time=result[1]))
 

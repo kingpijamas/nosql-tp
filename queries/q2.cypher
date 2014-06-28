@@ -4,8 +4,7 @@ MATCH
 	(nation) -[:NATIONKEY]->
 	(supplier) -[:SUPPKEY]->
 	(partsupp) <-[:PARTKEY]-
-	(part { p_size: {size}, p_type: /*TODO: comparar con like!!!!*/ "{type}" })
-	)
+	(part { p_size: {size}, p_type=~'.*"+{type}+".*'})
 
 WITH 
 	partsupp, min(partsupp.ps_supplycost)
