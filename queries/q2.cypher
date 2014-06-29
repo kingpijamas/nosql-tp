@@ -5,31 +5,27 @@
 }
 ()
 MATCH
-	(r:Region { r_name: {region}}) -[:REGIONKEY]->
-	(n:Nation) -[:NATIONKEY]->
-	(s:Supplier) -[:SUPPKEY]->
-	(ps:Partsupp) <-[:PARTKEY]-
-	(p:Part { p_size: {size}})
-
-WHERE
-	p.p_type =~ {type}
-
+	(r:Region { r_name: {region} }) <-[:REGIONKEY]-
+	(n:Nation) <-[:NATIONKEY]-
+	(s:Supplier) <-[ps:PARTSUPP]-
+	(p:Part { p_size: {size} })
 WITH 
-	ps, min(ps.ps_supplycost)
-
+	ps, min(ps.ps_supplycost) AS min_supp_cost, s, n, p
+WHERE
+	p.p_type =~ {type} AND
+	ps.ps_supplycost = min_supp_cost
 RETURN
-	supplier.s_acctbal,
-	supplier.s_name,
-	nation.n_name,
-	part.p_partkey,
-	part.p_mfgr,
-	supplier.s_address,
-	supplier.s_phone,
-	supplier.s_comment
-
+	s.s_acctbal,
+	s.s_name,
+	n.n_name,
+	p.p_partkey,
+	p.p_mfgr,
+	s.s_address,
+	s.s_phone,
+	s.s_comment
 ORDER BY
-	supplier.s_acctbal DESC,
-	nation.n_name,
-	supplier.s_name,
-	part.p_partkey
+	s.s_acctbal DESC,
+	n.n_name,
+	s.s_name,
+	p.p_partkey
 ;
