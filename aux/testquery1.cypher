@@ -1,3 +1,4 @@
+{}
 (unicode)
 CREATE (ee:Person { name: "Emil", from: "Sweden", klout: 99 })
 CREATE (e1:Person { name: "A", from: "Norway", klout: 1 })

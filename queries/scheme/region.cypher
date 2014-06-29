@@ -1,3 +1,4 @@
+{}
 ()
 CREATE (r:Region
 { 

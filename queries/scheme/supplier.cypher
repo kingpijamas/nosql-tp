@@ -1,3 +1,4 @@
+{}
 ()
 MATCH (n:Nation)
 CREATE (s:Supplier

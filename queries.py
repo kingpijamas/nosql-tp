@@ -3,6 +3,7 @@ import timeit
 import os
 import re
 import sys
+import json
 
 # the database
 GDB = GraphDatabase("http://localhost:7474/db/data/")
@@ -13,9 +14,10 @@ q = params = returns = None
 results = None
 
 def parse(file):
-	global q, returns
-	matches = re.match('(?P<returns>\(.*\))\s+(?P<q>(\s*.*\s*)*)', file.read())
+	global q, params, returns
+	matches = re.match('(?P<params>\{[^\{\}]*})\s+(?P<returns>\(.*\))\s+(?P<q>(\s*.*\s*)*)', file.read())
 	q = matches.group('q')
+	params = json.loads(matches.group('params'))
 	returns = eval(matches.group('returns'))
 
 def run_query():

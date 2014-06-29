@@ -1,3 +1,4 @@
+{}
 ()
 MATCH (s:Supplier)
 CREATE (p:Part

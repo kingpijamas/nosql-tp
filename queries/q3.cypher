@@ -1,16 +1,23 @@
+{
+	"segment" : "Everybody",
+	"date1" : 1503199078825,
+	"date2" : 1203199078825
+}
 ()
 MATCH 
-	(c:Customer { c_mktsegment: "{segment}"})-[:CUSTKEY]->
-	(order { o_orderdate < {date1} })-[:ORDERKEY]->
-	(lineitem { l_shipdate > {date2} })
-
+	(c:Customer { c_mktsegment: {segment}}) <-[:CUSTKEY]-
+	(o:Orders) <-[:ORDERKEY]-
+	(l:LineItem)
+WHERE
+	o.o_orderdate < {date1} AND
+	l.l_shipdate > {date2}
 RETURN
-	lineitem.l_orderkey,
-	sum(lineitem.l_extendedprice*(1-lineitem.l_discount)) AS revenue,
-	order.o_orderdate,
-	order.o_shippriority
+	l.l_orderkey,
+	sum(l.l_extendedprice*(1-l.l_discount)) AS revenue,
+	o.o_orderdate,
+	o.o_shippriority
 
 ORDER BY
-	revenue DESC
-	order.o_orderdate
+	revenue DESC,
+	o.o_orderdate
 ;

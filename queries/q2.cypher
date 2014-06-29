@@ -1,13 +1,21 @@
+{
+	"region" : "the Americas",
+	"size" : 123,
+	"type" : ".*Some.*"
+}
 ()
-MATCH 
-	(r:Region { r_name: "{region}"}) -[:REGIONKEY]->
-	(nation) -[:NATIONKEY]->
-	(supplier) -[:SUPPKEY]->
-	(partsupp) <-[:PARTKEY]-
-	(part { p_size: {size}, p_type=~'.*"+{type}+".*'})
+MATCH
+	(r:Region { r_name: {region}}) -[:REGIONKEY]->
+	(n:Nation) -[:NATIONKEY]->
+	(s:Supplier) -[:SUPPKEY]->
+	(ps:Partsupp) <-[:PARTKEY]-
+	(p:Part { p_size: {size}})
+
+WHERE
+	p.p_type =~ {type}
 
 WITH 
-	partsupp, min(partsupp.ps_supplycost)
+	ps, min(ps.ps_supplycost)
 
 RETURN
 	supplier.s_acctbal,
