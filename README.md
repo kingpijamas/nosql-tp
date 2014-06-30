@@ -9,7 +9,7 @@ To run queries:
 
 
 To build the test schema (the order is important):	
-	python queries.py queries/schema/region.cypher 1 queries/schema/nation.cypher 1 queries/schema/supplier.cypher 1 queries/schema/customer.cypher 1 queries/schema/orders.cypher 25 queries/schema/part.cypher 20 queries/schema/lineitem.cypher 1
+	python queries.py queries/schema/region.cy 1 queries/schema/nation.cy 1 queries/schema/supplier.cy 1 queries/schema/customer.cy 1 queries/schema/orders.cy 25 queries/schema/part.cy 20 queries/schema/lineitem.cy 1
 
 
 To create indexes:
