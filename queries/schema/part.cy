@@ -12,7 +12,7 @@ CREATE (p:Part
 	p_retailprice: 524.09,
 	p_comment: "Some comment"
 })
-CREATE UNIQUE (p)-[:PARTSUPP {
+CREATE (p)-[:PARTSUPP {
 	ps_availqty: 15,
 	ps_supplycost: 400.27,
 	ps_comment: "Some comment"
