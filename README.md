@@ -15,5 +15,3 @@ To build the test schema (the order is important):
 
 To create indexes:
 	python queries.py queries/schema/indexes/ 1
-
-
